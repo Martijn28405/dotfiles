@@ -54,6 +54,9 @@ require("lazy").setup({
   -- Thema
   { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
 
+  -- Discord Integration
+  { "vyfor/cord.nvim", event = "VeryLazy" },
+
   -- Statusline
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 
