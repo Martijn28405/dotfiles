@@ -49,6 +49,7 @@ vim.opt.signcolumn = "yes"    -- Altijd de signcolumn tonen (voor LSP, git signs
 --    Hier definiëren we alle plugins die we willen gebruiken.
 -- =============================================================================
 
+-- HIER BEGINT DE CALL (regel ~52)
 require("lazy").setup({
   
   -- Thema
@@ -75,21 +76,21 @@ require("lazy").setup({
   { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   
   {
-      'nvim-telescope/telescope.nvim', tag = '0.1.8',
+      'nvim-telescope/telescope.nvim',
       -- or                              , branch = '0.1.x',
       dependencies = { 'nvim-lua/plenary.nvim' },
 
       opts = {
           defaults = {
-              layout_strategy = 'horizontal',
+              layout_strategy = 'vertical',
               layout_config = {
-                  horizontal = {
-                      prompt_position = "top",
-                      preview_width = "60%"
-                  }
+                  prompt_position = 'bottom',
+                  height = 0.9,
+                  min_preview_height = 1
               }
           }
         },
+  },
 
 
   -- Autocompletion (nvim-cmp)
@@ -119,8 +120,13 @@ require("lazy").setup({
     }
   },
 
- }
-})
+  -- Session persistence
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+  },
+
+ }) -- <-- HIER IS DE CORRECTE AFSLUITING (rond regel ~155)
 
 -- =============================================================================
 -- 4. PLUGIN CONFIGURATIE
@@ -148,15 +154,12 @@ require("lsp-zero").preset("recommended")
 require("mason").setup({})
 require("mason-lspconfig").setup({
   ensure_installed = { 
-    -- VOEG HIER DE TAALSERVERS TOE DIE JE NODIG HEBT
-    -- Voorbeeld:
     "lua_ls",
-    "tsserver",  -- TypeScript/JavaScript
-    "pyright",   -- Python
+    "tsserver",
+    "pyright",
     "rust_analyzer",
-    "gopls",     -- Go
+    "gopls",
     "intelephense"
-    -- "csharp_ls" -- C#
   },
   handlers = {
     lsp_zero.default_setup,
