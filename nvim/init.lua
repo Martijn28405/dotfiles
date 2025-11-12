@@ -200,6 +200,7 @@ keymap("n", "<leader>fg", ":Telescope live_grep<CR>", opts)  -- "Find Grep" (zoe
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)   -- "Find Buffers"
 keymap("n", "<leader>fh", ":Telescope help_tags<CR>", opts)  -- "Find Help"
 keymap("n", "<leader>gg", ":Lazygit<CR>", opts) -- "Lazygit"
+keymap("n", "<leader>fd", ":Telescope diagnostics<CR>", opts) -- "Find Diagnostics" (Project Fouten)
 
 -- LSP Keymaps (via lsp-zero, de meeste zijn al ingesteld)
 -- De belangrijkste:
