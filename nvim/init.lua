@@ -86,7 +86,6 @@ require("lazy").setup({
               layout_config = {
                   prompt_position = 'bottom',
                   height = 0.9,
-                  min_preview_height = 1
               }
           }
         },
@@ -155,7 +154,7 @@ require("mason").setup({})
 require("mason-lspconfig").setup({
   ensure_installed = { 
     "lua_ls",
-    "tsserver",
+    "ts_ls",
     "pyright",
     "rust_analyzer",
     "gopls",
