@@ -73,8 +73,25 @@ require("lazy").setup({
   -- Git integratie
   { "lewis6991/gitsigns.nvim", opts = {} },
  
-  { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-  
+ {
+    "kdheepak/lazygit.nvim",
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    -- Optioneel: laadt de plugin direct als je start. 
+    -- Zet dit op true als je de git-status in je statusbalk wilt zien.
+    lazy = true, 
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+    }
+  },  
   {
       'nvim-telescope/telescope.nvim',
       -- or                              , branch = '0.1.x',
@@ -198,7 +215,6 @@ keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts) -- "Find Files"
 keymap("n", "<leader>fg", ":Telescope live_grep<CR>", opts)  -- "Find Grep" (zoek tekst in project)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)   -- "Find Buffers"
 keymap("n", "<leader>fh", ":Telescope help_tags<CR>", opts)  -- "Find Help"
-keymap("n", "<leader>gg", ":Lazygit<CR>", opts) -- "Lazygit"
 keymap("n", "<leader>fd", ":Telescope diagnostics<CR>", opts) -- "Find Diagnostics" (Project Fouten)
 
 -- LSP Keymaps (via lsp-zero, de meeste zijn al ingesteld)
