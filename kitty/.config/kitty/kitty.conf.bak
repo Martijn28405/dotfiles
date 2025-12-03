@@ -1,0 +1,14 @@
+map ctrl+c copy_to_clipboard
+map ctrl+v paste_from_clipboard
+map alt+c send_text all \x03
+
+font_size 17.0
+font_family JetBrains Mono
+
+remember_window_size no
+os_window_state maximized
+
+# BEGIN_KITTY_THEME
+# Tokyo Night
+include current-theme.conf
+# END_KITTY_THEME
