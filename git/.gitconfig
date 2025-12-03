@@ -1,3 +1,18 @@
 [user]
 	email = 1049334@hr.nl
-	name = Martijn Verwoert
+    name = Martijn Verwoert
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # Gebruik 'n' om naar de volgende diff te springen
+    light = false      # Zet op true als je een lichte terminal gebruikt
+    side-by-side = true # Toont wijzigingen naast elkaar (optioneel, maar erg fijn)
+    line-numbers = true
+
+[merge]
+    conflictstyle = diff3
