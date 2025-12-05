@@ -91,7 +91,7 @@ require("lazy").setup({
                   prompt_position = 'bottom',
                   height = 0.9,
               }
-          }
+          },
         },
   },
 
@@ -118,9 +118,53 @@ require("lazy").setup({
   },
 
   {
-    "folke/persistence.nvim",
-    event = "BufReadPre",
-  }
+  "folke/persistence.nvim",
+  event = "BufReadPre",
+  opts = {},
+  keys = {
+    { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
+    { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+    { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+  },
+}
+})
+
+require('telescope').setup({
+    defaults = {
+        -- Deze defaults zijn er voor andere pickers die 'file_finder_cmd' gebruiken,
+        -- en als fallback.
+        file_finder_cmd = { 
+            'fd', 
+            '--type', 'f', 
+            '--hidden', 
+            '--no-ignore-vcs'
+        },
+        vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--hidden',
+            '--no-ignore-vcs',
+        },
+        file_ignore_patterns = {},
+    },
+    
+    -- DEZE SECTIE IS CRUCIAAL VOOR find_files
+    pickers = {
+        find_files = {
+            -- Dwingt de find_files picker om deze specifieke finder command te gebruiken
+            find_command = {
+                'fd',
+                '--type', 'f',
+                '--hidden',
+                '--no-ignore-vcs'
+            },
+        },
+    },
 })
 
 vim.cmd.colorscheme "tokyonight-storm"

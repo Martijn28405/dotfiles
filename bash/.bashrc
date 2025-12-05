@@ -7,6 +7,8 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
 fi
 export PATH
 
+export PATH="$PATH:$HOME/flutter_sdk/flutter/bin"
+
 if [ -d ~/.bashrc.d ]; then
     for rc in ~/.bashrc.d/*; do
         if [ -f "$rc" ]; then
@@ -56,11 +58,6 @@ alias dnb='dotnet build'
 alias dnt='dotnet test'
 alias dnw='dotnet watch'
 
-alias c='cargo'
-alias cr='cargo run'
-alias cb='cargo build'
-alias ct='cargo test'
-alias cc='cargo check'
 
 alias ld='lazydocker'
 alias d='docker'
