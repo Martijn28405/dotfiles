@@ -87,6 +87,7 @@ eval "$(zoxide init bash)"
 eval "$(direnv hook bash)"
 eval "$(starship init bash)"
 eval "$(fzf --bash)"
+eval "$(thefuck --alias)"
 
 alias ls="eza --icons"
 alias ll="eza -la --icons --git"
@@ -94,3 +95,4 @@ alias lt="eza --tree --level=2 --icons"
 alias cd="z"
 
 unset rc
+export PATH="$HOME/.npm-global/bin:$PATH"
