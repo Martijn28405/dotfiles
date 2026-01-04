@@ -1,3 +1,7 @@
+if vim.env.SSH_CONNECTION then
+  return {}
+end
+
 return {
   {
     "vyfor/cord.nvim",
@@ -42,19 +46,28 @@ return {
         return vim.bo.filetype == "lazy"
       end
 
-      local function is_lazygit()
-        if vim.bo.filetype == "lazygit" then return true end
-        local ok, job = pcall(function() return vim.b.terminal_job_id end)
-        if ok and job then
-          local info = vim.fn.jobinfo(job)
-          local cmd = info and info.cmd
-          if type(cmd) == "table" then cmd = table.concat(cmd, " ") end
-          if type(cmd) == "string" and cmd:lower():find("lazygit", 1, true) then
-            return true
-          end
-        end
-        return false
-      end
+
+local function is_lazygit()
+  if vim.bo.filetype == "lazygit" then return true end
+
+  local ok, job = pcall(function() return vim.b.terminal_job_id end)
+  if not (ok and job) then
+    return false
+  end
+
+  if type(vim.fn.jobinfo) ~= "function" then
+    return false
+  end
+
+  local info = vim.fn.jobinfo(job)
+  local cmd = info and info.cmd
+  if type(cmd) == "table" then cmd = table.concat(cmd, " ") end
+  if type(cmd) == "string" and cmd:lower():find("lazygit", 1, true) then
+    return true
+  end
+
+  return false
+end
 
       local function terminal_activity()
         local ok, job = pcall(function() return vim.b.terminal_job_id end)
@@ -171,4 +184,3 @@ return {
     end)(),
   },
 }
-

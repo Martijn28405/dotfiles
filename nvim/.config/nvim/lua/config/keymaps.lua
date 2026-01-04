@@ -36,26 +36,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.keymap.set("n", "<leader>xx", function()
-  require("trouble").toggle()
-end, { noremap = true, silent = true })
-
-vim.keymap.set("n", "<leader>xw", function()
-  require("trouble").toggle("workspace_diagnostics")
-end, { noremap = true, silent = true })
-
-vim.keymap.set("n", "<leader>xd", function()
-  require("trouble").toggle("document_diagnostics")
-end, { noremap = true, silent = true })
-
-vim.keymap.set("n", "<leader>xl", function()
-  require("trouble").toggle("loclist")
-end, { noremap = true, silent = true })
-
-vim.keymap.set("n", "<leader>xq", function()
-  require("trouble").toggle("quickfix")
-end, { noremap = true, silent = true })
-
 vim.keymap.set({ "n", "x", "o" }, "s", function()
   require("flash").jump()
 end, { noremap = true, silent = true })
@@ -63,3 +43,7 @@ end, { noremap = true, silent = true })
 vim.keymap.set({ "n", "x", "o" }, "S", function()
   require("flash").treesitter()
 end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>ut", function()
+  require("config.theme").pick()
+end, { silent = true })

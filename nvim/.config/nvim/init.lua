@@ -11,7 +11,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
+local theme = require("config.theme")
+
+theme.load()
+
+pcall(vim.cmd.colorscheme, "tokyonight-storm")
+
 require("config.options")
+
 require("config.clipboard")
 
 require("lazy").setup("plugins")
@@ -20,6 +28,12 @@ require("config.keymaps")
 
 require("config.codex")
 
-require("config.diagnostics")
+require("config.codex_extras")
 
-vim.cmd.colorscheme("tokyonight-storm")
+require("config.projects")
+
+require("config.run")
+
+require("config.trouble")
+
+require("config.diagnostics")
