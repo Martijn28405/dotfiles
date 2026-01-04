@@ -31,6 +31,8 @@ require("config.projects")
 
 require("config.run")
 
+require("config.term")
+
 require("config.trouble")
 
 require("config.diagnostics")
