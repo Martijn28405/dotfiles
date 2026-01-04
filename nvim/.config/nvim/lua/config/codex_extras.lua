@@ -3,6 +3,8 @@ local function send_template(title, body)
   codex_send("\n\n" .. title .. "\n" .. body .. "\n\n")
 end
 
+local codex = require("config.codex")
+
 local function prompt_for_continue()
   vim.ui.input({ prompt = "Codex continue: " }, function(input)
     if not input or input == "" then return end
@@ -16,21 +18,30 @@ end, { silent = true })
 
 vim.keymap.set("n", "<leader>aR", prompt_for_continue, { silent = true })
 
-vim.keymap.set("v", "<leader>ax", function()
-  send_template("Task", "Explain the selected code and propose a fix. Be concrete and point to exact lines.")
-end, { silent = true })
 
-vim.keymap.set("v", "<leader>at", function()
-  send_template("Task", "Write tests for the selected code. Include edge cases.")
-end, { silent = true })
+vim.keymap.set("v", "<leader>ax", function()
+  codex.send_selection_with_prompt(
+    "Explain what this code does, then propose a concrete fix or improvement. Be specific and reference the lines."
+  )
+end, { silent = true, desc = "Explain + fix (visual)" })
 
 vim.keymap.set("v", "<leader>ar", function()
-  send_template("Task", "Refactor the selected code to be simpler and more readable. Keep behavior the same.")
-end, { silent = true })
+  codex.send_selection_with_prompt(
+    "Refactor this to be simpler and more readable, keeping behavior identical. Return the updated code."
+  )
+end, { silent = true, desc = "Refactor (visual)" })
+
+vim.keymap.set("v", "<leader>at", function()
+  codex.send_selection_with_prompt(
+    "Write tests for this. Include edge cases. Tell me where to place the tests and how to run them."
+  )
+end, { silent = true, desc = "Write tests (visual)" })
 
 vim.keymap.set("v", "<leader>ab", function()
-  send_template("Task", "Find the bug in the selected code and explain how to reproduce it.")
-end, { silent = true })
+  codex.send_selection_with_prompt(
+    "Find the bug or potential bug(s) in this code. Explain how to reproduce and how to fix."
+  )
+end, { silent = true, desc = "Find bug (visual)" })
 
 local ok, wk = pcall(require, "which-key")
 if ok then

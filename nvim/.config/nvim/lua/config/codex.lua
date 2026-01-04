@@ -67,7 +67,20 @@ end
 local function get_visual_selection()
   local _, ls, cs = unpack(vim.fn.getpos("'<"))
   local _, le, ce = unpack(vim.fn.getpos("'>"))
+
+  -- In Visual mode, '< and '> may not be updated yet; use v/. as a fallback.
+  if ls == 0 or le == 0 then
+    local _, vls, vcs = unpack(vim.fn.getpos("v"))
+    local _, vle, vce = unpack(vim.fn.getpos("."))
+    ls, cs, le, ce = vls, vcs, vle, vce
+  end
+
   if ls == 0 or le == 0 then return "" end
+
+  if ls > le or (ls == le and cs > ce) then
+    ls, le = le, ls
+    cs, ce = ce, cs
+  end
 
   local lines = vim.fn.getline(ls, le)
   if #lines == 0 then return "" end
@@ -136,7 +149,48 @@ vim.keymap.set("n", "<leader>aF", function()
   })
 end, { silent = true })
 
+local function selection_context()
+  local sel = get_visual_selection()
+  if sel == "" then
+    return nil
+  end
+
+  local file = vim.api.nvim_buf_get_name(0)
+  local ft = vim.bo.filetype
+  local ls = vim.fn.line("'<")
+  local le = vim.fn.line("'>")
+
+  return {
+    sel = sel,
+    file = (file ~= "" and file or "[No Name]"),
+    ft = (ft ~= "" and ft or "text"),
+    range = ("%d-%d"):format(ls, le),
+  }
+end
+
+local function codex_send_selection_with_prompt(prompt)
+  local ctx = selection_context()
+  if not ctx then
+    return
+  end
+
+  -- Keep selection highlighted (optional)
+  vim.cmd("normal! gv")
+
+  local msg =
+    "\n\n---\n" ..
+    "File: " .. ctx.file .. "\n" ..
+    "Type: " .. ctx.ft .. "\n" ..
+    "Lines: " .. ctx.range .. "\n\n" ..
+    "Selected code:\n```" .. ctx.ft .. "\n" .. ctx.sel .. "\n```\n\n" ..
+    "Task:\n" .. prompt .. "\n\n"
+
+  codex_send(msg)
+end
+
+
 local M = {}
 M.open = codex_open
 M.send = codex_send
+M.send_selection_with_prompt = codex_send_selection_with_prompt
 return M
