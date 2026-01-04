@@ -18,5 +18,8 @@ require("lazy").setup("plugins")
 
 require("config.keymaps")
 
-vim.cmd.colorscheme("tokyonight-storm")
+require("config.codex")
 
+require("config.diagnostics")
+
+vim.cmd.colorscheme("tokyonight-storm")
