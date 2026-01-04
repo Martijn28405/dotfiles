@@ -3,10 +3,14 @@ local Terminal = require("toggleterm.terminal").Terminal
 -- ---------------------------------------------------------------------
 -- Status handling (for lualine)
 -- ---------------------------------------------------------------------
+
 local function set_codex_status(s)
   vim.g.codex_status = s
-  pcall(require("lualine").refresh)
+  vim.schedule(function()
+    vim.cmd("redrawstatus")
+  end)
 end
+
 
 vim.g.codex_status = vim.g.codex_status or "idle"
 
