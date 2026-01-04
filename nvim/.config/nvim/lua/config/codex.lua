@@ -1,5 +1,8 @@
 local Terminal = require("toggleterm.terminal").Terminal
 
+-- ---------------------------------------------------------------------
+-- Status handling (for lualine)
+-- ---------------------------------------------------------------------
 local function set_codex_status(s)
   vim.g.codex_status = s
   pcall(require("lualine").refresh)
@@ -7,56 +10,81 @@ end
 
 vim.g.codex_status = vim.g.codex_status or "idle"
 
-local codex = Terminal:new({
-  cmd = "codex",
-  hidden = true,
-  direction = "float",
-  float_opts = { border = "rounded" },
-  start_in_insert = true,
+-- ---------------------------------------------------------------------
+-- Factory for Codex terminals
+-- ---------------------------------------------------------------------
+local function make_codex_terminal(cmd)
+  return Terminal:new({
+    cmd = cmd,
+    hidden = true,
+    direction = "float",
+    float_opts = { border = "rounded" },
+    start_in_insert = true,
 
-  on_open = function()
-    set_codex_status("open")
-  end,
+    on_open = function()
+      set_codex_status("open")
+    end,
 
-  on_close = function()
-    set_codex_status("idle")
-  end,
+    on_close = function()
+      set_codex_status("idle")
+    end,
 
+    on_stdout = function(_, _, data)
+      if not data then return end
 
-on_stdout = function(_, data)
-  if data == nil then return end
+      local chunk = ""
+      if type(data) == "table" then
+        chunk = table.concat(data, "\n")
+      elseif type(data) == "string" then
+        chunk = data
+      else
+        return
+      end
 
-  local chunk = ""
-  if type(data) == "table" then
-    chunk = table.concat(data, "\n")
-  elseif type(data) == "string" then
-    chunk = data
-  else
-    return
-  end
+      -- Prompt visible → ready
+      if chunk:find("›", 1, true) then
+        set_codex_status("ready")
+        return
+      end
 
-  if chunk:find("›", 1, true) then
-    set_codex_status("ready")
-    return
-  end
+      -- Bullet output → thinking
+      if chunk:find("•", 1, true) then
+        set_codex_status("thinking")
+      end
+    end,
+  })
+end
 
-  if chunk:find("•", 1, true) then
-    set_codex_status("thinking")
-  end
-end,
-})
+-- ---------------------------------------------------------------------
+-- Terminals
+-- ---------------------------------------------------------------------
+local codex = make_codex_terminal("codex")
+local codex_resume = make_codex_terminal("codex resume")
 
+-- ---------------------------------------------------------------------
+-- Open / resume
+-- ---------------------------------------------------------------------
 local function codex_open()
   codex:toggle()
   set_codex_status(codex:is_open() and "open" or "idle")
 end
 
+local function codex_open_resume()
+  codex_resume:toggle()
+  set_codex_status(codex_resume:is_open() and "open" or "idle")
+end
+
+-- ---------------------------------------------------------------------
+-- Send text to Codex
+-- ---------------------------------------------------------------------
 local function codex_send(text)
   if not text or text == "" then return end
   if not codex:is_open() then
     codex_open()
   end
+
   set_codex_status("thinking")
+
   vim.defer_fn(function()
     if codex.job_id then
       vim.api.nvim_chan_send(codex.job_id, text)
@@ -64,11 +92,13 @@ local function codex_send(text)
   end, 120)
 end
 
+-- ---------------------------------------------------------------------
+-- Visual selection helpers
+-- ---------------------------------------------------------------------
 local function get_visual_selection()
   local _, ls, cs = unpack(vim.fn.getpos("'<"))
   local _, le, ce = unpack(vim.fn.getpos("'>"))
 
-  -- In Visual mode, '< and '> may not be updated yet; use v/. as a fallback.
   if ls == 0 or le == 0 then
     local _, vls, vcs = unpack(vim.fn.getpos("v"))
     local _, vle, vce = unpack(vim.fn.getpos("."))
@@ -87,19 +117,55 @@ local function get_visual_selection()
 
   lines[1] = string.sub(lines[1], cs)
   lines[#lines] = string.sub(lines[#lines], 1, ce)
+
   return table.concat(lines, "\n")
 end
 
--- Space ac → open/close
-vim.keymap.set("n", "<leader>ac", function()
-  codex_open()
-end, { silent = true })
+local function selection_context()
+  local sel = get_visual_selection()
+  if sel == "" then return nil end
 
-vim.keymap.set("t", "<leader>ac", function()
-  codex_open()
-end, { silent = true })
+  local file = vim.api.nvim_buf_get_name(0)
+  local ft = vim.bo.filetype
+  local ls = vim.fn.line("'<")
+  local le = vim.fn.line("'>")
 
--- Visual + Space ac → selection to codex
+  return {
+    sel = sel,
+    file = (file ~= "" and file or "[No Name]"),
+    ft = (ft ~= "" and ft or "text"),
+    range = ("%d-%d"):format(ls, le),
+  }
+end
+
+local function codex_send_selection_with_prompt(prompt)
+  local ctx = selection_context()
+  if not ctx then return end
+
+  vim.cmd("normal! gv")
+
+  local msg =
+    "\n\n---\n" ..
+    "File: " .. ctx.file .. "\n" ..
+    "Type: " .. ctx.ft .. "\n" ..
+    "Lines: " .. ctx.range .. "\n\n" ..
+    "Selected code:\n```" .. ctx.ft .. "\n" .. ctx.sel .. "\n```\n\n" ..
+    "Task:\n" .. prompt .. "\n\n"
+
+  codex_send(msg)
+end
+
+-- ---------------------------------------------------------------------
+-- Keymaps
+-- ---------------------------------------------------------------------
+-- Space ac → open / close
+vim.keymap.set("n", "<leader>ac", codex_open, { silent = true, desc = "Codex open" })
+vim.keymap.set("t", "<leader>ac", codex_open, { silent = true })
+
+-- Space ar → resume chat
+vim.keymap.set("n", "<leader>ar", codex_open_resume, { silent = true, desc = "Codex resume" })
+
+-- Visual + Space ac → selection
 vim.keymap.set("v", "<leader>ac", function()
   local sel = get_visual_selection()
   vim.cmd("normal! gv")
@@ -117,12 +183,11 @@ end, { silent = true })
 vim.keymap.set("n", "<leader>aC", function()
   local file = vim.api.nvim_buf_get_name(0)
   if file == "" then return end
-  local lines = vim.fn.readfile(file)
-  local text = table.concat(lines, "\n")
+  local text = table.concat(vim.fn.readfile(file), "\n")
   codex_send("\n\n---\nFile contents:\n```text\n" .. text .. "\n```\n\n")
 end, { silent = true })
 
--- Space aF → multi-file via Telescope (TAB select, ENTER send)
+-- Space aF → multi-file via Telescope
 vim.keymap.set("n", "<leader>aF", function()
   require("telescope.builtin").find_files({
     attach_mappings = function(_, map)
@@ -149,48 +214,12 @@ vim.keymap.set("n", "<leader>aF", function()
   })
 end, { silent = true })
 
-local function selection_context()
-  local sel = get_visual_selection()
-  if sel == "" then
-    return nil
-  end
-
-  local file = vim.api.nvim_buf_get_name(0)
-  local ft = vim.bo.filetype
-  local ls = vim.fn.line("'<")
-  local le = vim.fn.line("'>")
-
-  return {
-    sel = sel,
-    file = (file ~= "" and file or "[No Name]"),
-    ft = (ft ~= "" and ft or "text"),
-    range = ("%d-%d"):format(ls, le),
-  }
-end
-
-local function codex_send_selection_with_prompt(prompt)
-  local ctx = selection_context()
-  if not ctx then
-    return
-  end
-
-  -- Keep selection highlighted (optional)
-  vim.cmd("normal! gv")
-
-  local msg =
-    "\n\n---\n" ..
-    "File: " .. ctx.file .. "\n" ..
-    "Type: " .. ctx.ft .. "\n" ..
-    "Lines: " .. ctx.range .. "\n\n" ..
-    "Selected code:\n```" .. ctx.ft .. "\n" .. ctx.sel .. "\n```\n\n" ..
-    "Task:\n" .. prompt .. "\n\n"
-
-  codex_send(msg)
-end
-
-
+-- ---------------------------------------------------------------------
+-- Exports
+-- ---------------------------------------------------------------------
 local M = {}
 M.open = codex_open
+M.resume = codex_open_resume
 M.send = codex_send
 M.send_selection_with_prompt = codex_send_selection_with_prompt
 return M

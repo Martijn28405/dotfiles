@@ -12,9 +12,7 @@ local function prompt_for_continue()
   end)
 end
 
-vim.keymap.set("n", "<leader>ar", function()
-  send_template("Continue", "continue")
-end, { silent = true })
+
 
 vim.keymap.set("n", "<leader>aR", prompt_for_continue, { silent = true })
 

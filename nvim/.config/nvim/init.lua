@@ -28,6 +28,8 @@ require("config.keymaps")
 
 require("config.codex")
 
+require("config.lualine")
+
 require("config.codex_extras")
 
 require("config.projects")
