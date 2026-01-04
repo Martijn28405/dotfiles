@@ -14,6 +14,7 @@ keymap("n", "<leader>ff", function()
   tb.find_files()
 end, opts)
 
+
 keymap("n", "<leader>fg", function()
   vim.g.cord_telescope_mode = "grep"
   tb.live_grep()

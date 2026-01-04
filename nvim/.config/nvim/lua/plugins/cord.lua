@@ -47,44 +47,16 @@ return {
       end
 
 
+
 local function is_lazygit()
-  if vim.bo.filetype == "lazygit" then return true end
-
-  local ok, job = pcall(function() return vim.b.terminal_job_id end)
-  if not (ok and job) then
-    return false
-  end
-
-  if type(vim.fn.jobinfo) ~= "function" then
-    return false
-  end
-
-  local info = vim.fn.jobinfo(job)
-  local cmd = info and info.cmd
-  if type(cmd) == "table" then cmd = table.concat(cmd, " ") end
-  if type(cmd) == "string" and cmd:lower():find("lazygit", 1, true) then
-    return true
-  end
-
-  return false
+  return vim.bo.filetype == "lazygit"
 end
 
-      local function terminal_activity()
-        local ok, job = pcall(function() return vim.b.terminal_job_id end)
-        if not (ok and job) then return nil end
 
-        local info = vim.fn.jobinfo(job)
-        local cmd = info and info.cmd
-        if type(cmd) == "table" then cmd = table.concat(cmd, " ") end
-        if type(cmd) ~= "string" then return nil end
-        local c = cmd:lower()
+    local function terminal_activity()
+  return nil
+end
 
-        if c:find("dotnet build", 1, true) then return "Building. Expecting disappointment." end
-        if c:find("dotnet test", 1, true) then return "Running tests. Awaiting judgement." end
-        if c:find("dotnet run", 1, true) then return "Running the app. Watching it closely." end
-
-        return nil
-      end
 
       return {
         text = {

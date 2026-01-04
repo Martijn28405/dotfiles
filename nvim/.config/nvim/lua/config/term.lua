@@ -18,7 +18,6 @@ local function term_send(cmd)
   end
 end
 
-vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { silent = true })
 
 vim.keymap.set("n", "<leader>tt", term_toggle, { silent = true, desc = "Terminal toggle" })
 vim.keymap.set("t", "<leader>tt", term_toggle, { silent = true })
