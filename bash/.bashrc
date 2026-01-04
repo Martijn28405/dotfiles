@@ -58,6 +58,14 @@ alias dnb='dotnet build'
 alias dnt='dotnet test'
 alias dnw='dotnet watch'
 
+venv() {
+  if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+  else
+    echo "Geen .venv gevonden in deze map"
+  fi
+}
+
 
 alias ld='lazydocker'
 alias d='docker'
@@ -76,7 +84,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     alias copy='pbcopy'
     alias myip='ipconfig getifaddr en0'
     alias flushdns='sudo killall -HUP mDNSResponder'
-    alias rm='trash' 
+    alias rm='trash'
 else
     alias copy='xclip -selection clipboard'
     alias myip="ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print \$2}' | cut -f1  -d'/'"
@@ -96,3 +104,6 @@ alias cd="z"
 
 unset rc
 export PATH="$HOME/.npm-global/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
