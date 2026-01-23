@@ -23,13 +23,7 @@ require("lazy").setup("plugins")
 
 require("config.keymaps")
 
-require("config.codex")
-
-require("config.codex_extras")
-
 require("config.projects")
-
-require("config.run")
 
 require("config.term")
 
