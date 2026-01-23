@@ -27,9 +27,7 @@ return {
           "ts_ls",
           "pyright",
           "rust_analyzer",
-          "gopls",
           "intelephense",
-          "csharp-language-server",
         },
         handlers = {
           lsp_zero.default_setup,
@@ -47,4 +45,3 @@ return {
     end,
   },
 }
-
