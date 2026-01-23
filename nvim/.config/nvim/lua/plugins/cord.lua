@@ -1,11 +1,8 @@
-if vim.env.SSH_CONNECTION then
-  return {}
-end
-
 return {
   {
     "vyfor/cord.nvim",
     event = "VeryLazy",
+    build = ":Cord update",
     opts = (function()
       local markers = {
         ".git",
@@ -35,6 +32,14 @@ return {
 
       local function ro_suffix(opts)
         return opts.is_read_only and " (read-only)" or ""
+      end
+
+      local function discord_ipc_paths()
+        local tmpdir = vim.env.TMPDIR or "/tmp"
+        return {
+          vim.fs.joinpath(tmpdir, "discord-ipc-0"),
+          "/tmp/discord-ipc-0",
+        }
       end
 
       local function is_telescope()
@@ -150,6 +155,10 @@ end
 
         advanced = {
           plugin = { cursor_update = "on_move" },
+          discord = {
+            pipe_paths = discord_ipc_paths(),
+            reconnect = { enabled = true, interval = 5000, initial = true },
+          },
           workspace = { root_markers = markers },
         },
       }
