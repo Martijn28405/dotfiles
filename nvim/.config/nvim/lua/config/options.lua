@@ -17,4 +17,7 @@ vim.opt.breakindent = true
 vim.opt.wrap = false
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
+vim.opt.clipboard = "unnamedplus"
+vim.opt.undofile = true
+vim.opt.swapfile = false
 

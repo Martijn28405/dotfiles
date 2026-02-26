@@ -1,5 +1,10 @@
-local Terminal = require("toggleterm.terminal").Terminal
 
+local ok, term = pcall(require, "toggleterm.terminal")
+if not ok then
+  return
+end
+
+local Terminal = term.Terminal
 local inline = Terminal:new({
   hidden = true,
   direction = "horizontal",

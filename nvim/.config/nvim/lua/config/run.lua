@@ -1,4 +1,9 @@
-local Terminal = require("toggleterm.terminal").Terminal
+local ok, term = pcall(require, "toggleterm.terminal")
+if not ok then
+  return
+end
+
+local Terminal = term.Terminal
 
 local terms = {}
 
@@ -13,6 +18,4 @@ vim.keymap.set("n", "<leader>rr", function() run("run", "make run") end, { silen
 vim.keymap.set("n", "<leader>rt", function() run("test", "make test") end, { silent = true })
 vim.keymap.set("n", "<leader>rb", function() run("build", "make build") end, { silent = true })
 
-vim.keymap.set("n", "<leader>rT", function() run("pytest", "pytest -q") end, { silent = true })
 vim.keymap.set("n", "<leader>rD", function() run("dotnet", "dotnet test") end, { silent = true })
-vim.keymap.set("n", "<leader>rN", function() run("npm", "npm test") end, { silent = true })

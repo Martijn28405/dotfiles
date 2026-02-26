@@ -4,7 +4,10 @@ return {
     version = "*",
     opts = {
       direction = "float",
-      float_opts = { border = "rounded" },
+      open_mapping = [[<c-\>]],
     },
+    config = function(_, opts)
+      require("toggleterm").setup(opts)
+    end,
   },
 }

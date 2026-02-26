@@ -1,0 +1,30 @@
+return {
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufWritePost", "BufReadPost", "InsertLeave" },
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        python     = { "ruff" },
+        javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
+        lua        = { "luacheck" },
+        go         = { "golangcilint" },
+        php        = { "phpcs" },
+      }
+
+      -- Run linter automatically on the events above
+      vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+
+      -- Manual trigger
+      vim.keymap.set("n", "<leader>ll", function()
+        lint.try_lint()
+      end, { desc = "Lint current file" })
+    end,
+  },
+}

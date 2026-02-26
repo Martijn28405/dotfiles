@@ -3,10 +3,7 @@ return {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
-      format_on_save = {
-        timeout_ms = 2000,
-        lsp_fallback = true,
-      },
+      format_on_save = false,
       formatters_by_ft = {
         ["*"] = { "trim_whitespace", "trim_newlines" },
         ["_"] = {},
@@ -31,9 +28,8 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "williamboman/mason.nvim" },
     opts = {
-      ensure_installed = { "black", "isort", "prettier" },
+      ensure_installed = { "black", "isort", "prettier", "ruff", "eslint_d", "luacheck" },
       run_on_start = true,
     },
   },
 }
-
