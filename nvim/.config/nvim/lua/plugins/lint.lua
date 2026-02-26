@@ -9,9 +9,8 @@ return {
         python     = { "ruff" },
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
-        lua        = { "luacheck" },
-        go         = { "golangcilint" },
-        php        = { "phpcs" },
+        lua        = { "selene" },
+php        = { "phpcs" },
       }
 
       -- Run linter automatically on the events above

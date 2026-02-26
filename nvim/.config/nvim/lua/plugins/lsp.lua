@@ -30,10 +30,9 @@ return {
           "ts_ls",
           "pyright",
           "rust_analyzer",
-          "gopls",
           "intelephense",
-          "csharp-language-server",
-          "vue-language-server",
+          "csharp_ls",
+          "volar",
         },
         handlers = {
           function(server_name)

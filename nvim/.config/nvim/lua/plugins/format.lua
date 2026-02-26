@@ -28,7 +28,7 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "williamboman/mason.nvim" },
     opts = {
-      ensure_installed = { "black", "isort", "prettier", "ruff", "eslint_d", "luacheck" },
+      ensure_installed = { "black", "isort", "prettier", "ruff", "eslint_d", "selene" },
       run_on_start = true,
     },
   },
