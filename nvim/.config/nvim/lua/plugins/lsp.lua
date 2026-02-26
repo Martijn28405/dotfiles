@@ -20,8 +20,6 @@ return {
         vim.keymap.set("n", "gY", "<cmd>Glance type_definitions<cr>",       opts)
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,                 opts)
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next,                 opts)
-        vim.keymap.set("n", "<F2>", vim.lsp.buf.rename,                     opts)
-        vim.keymap.set("n", "<F4>", vim.lsp.buf.code_action,                opts)
       end
 
       require("mason-lspconfig").setup({

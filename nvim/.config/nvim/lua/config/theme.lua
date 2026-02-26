@@ -10,6 +10,11 @@ local themes = {
   "nightfox",
   "duskfox",
   "nordfox",
+  "rose-pine",
+  "rose-pine-moon",
+  "everforest",
+  "onedark",
+  "dracula",
 }
 
 local default_theme = "tokyonight-storm"

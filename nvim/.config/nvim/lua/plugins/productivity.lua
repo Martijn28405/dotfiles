@@ -5,15 +5,11 @@ return {
     opts = {},
   },
   {
-    "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {},
-  },
-  {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {},
   },
+  { "christoomey/vim-tmux-navigator" },
 
   -- Makes . repeat work with plugin operations (surround, etc.)
   { "tpope/vim-repeat" },

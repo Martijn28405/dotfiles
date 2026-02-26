@@ -7,20 +7,59 @@ end, opts)
 
 local tb = require("telescope.builtin")
 
-keymap("n", "<leader>ff", function()
-  vim.g.cord_telescope_mode = "files"
+local function file_dir()
+  local file_dir = vim.fn.expand("%:p:h")
+  return file_dir ~= "" and file_dir or nil
+end
+
+local function with_mode(mode, fn)
+  return function()
+    vim.g.cord_telescope_mode = mode
+    fn()
+  end
+end
+
+local function has_lsp_client(bufnr)
+  return #vim.lsp.get_clients({ bufnr = bufnr or 0 }) > 0
+end
+
+local function lsp_rename()
+  if not has_lsp_client(0) then
+    vim.notify("Geen LSP actief in deze buffer", vim.log.levels.WARN)
+    return
+  end
+  vim.lsp.buf.rename()
+end
+
+local function lsp_code_action()
+  if not has_lsp_client(0) then
+    vim.notify("Geen LSP actief in deze buffer", vim.log.levels.WARN)
+    return
+  end
+  vim.lsp.buf.code_action()
+end
+
+keymap("n", "<leader>ff", with_mode("files", function()
+  tb.find_files({ cwd = file_dir() })
+end), opts)
+
+keymap("n", "<leader>fF", with_mode("files", function()
   tb.find_files()
-end, opts)
+end), opts)
 
+keymap("n", "<leader>fg", with_mode("grep", function()
+  tb.live_grep({ cwd = file_dir() })
+end), opts)
 
-keymap("n", "<leader>fg", function()
-  vim.g.cord_telescope_mode = "grep"
+keymap("n", "<leader>fG", with_mode("grep", function()
   tb.live_grep()
-end, opts)
+end), opts)
 
 keymap("n", "<leader>fb", tb.buffers, opts)
 keymap("n", "<leader>fh", tb.help_tags, opts)
 keymap("n", "<leader>fd", tb.diagnostics, opts)
+keymap("n", "<leader>cr", lsp_rename, opts)
+keymap({ "n", "v" }, "<leader>ca", lsp_code_action, opts)
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "TelescopePrompt",

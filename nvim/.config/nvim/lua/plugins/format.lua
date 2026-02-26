@@ -2,24 +2,31 @@ return {
   {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      format_on_save = false,
-      formatters_by_ft = {
-        ["*"] = { "trim_whitespace", "trim_newlines" },
-        ["_"] = {},
-        python = { "isort", "black" },
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        json = { "prettier" },
-        html = { "prettier" },
-        css = { "prettier" },
-        scss = { "prettier" },
-        markdown = { "prettier" },
-        yaml = { "prettier" },
-      },
-    },
+    opts = function()
+      return {
+        format_on_save = function()
+          if not vim.g.autoformat_enabled then
+            return
+          end
+          return { timeout_ms = 2000, lsp_fallback = true }
+        end,
+        formatters_by_ft = {
+          ["*"] = { "trim_whitespace", "trim_newlines" },
+          ["_"] = {},
+          python = { "isort", "black" },
+          javascript = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescript = { "prettier" },
+          typescriptreact = { "prettier" },
+          json = { "prettier" },
+          html = { "prettier" },
+          css = { "prettier" },
+          scss = { "prettier" },
+          markdown = { "prettier" },
+          yaml = { "prettier" },
+        },
+      }
+    end,
   },
 
   { "williamboman/mason.nvim", opts = {} },
