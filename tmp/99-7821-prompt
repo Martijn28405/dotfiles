@@ -1,3 +1,11 @@
+<Context>
+You receive a selection in neovim that you need to replace with new code.
+The selection's contents may contain notes, incorporate the notes every time if there are some.
+consider the context of the selection and what you are suppose to be implementing
+<SELECTION_LOCATION>
+range(point(1,1),point(7,1))
+</SELECTION_LOCATION>
+<SELECTION_CONTENT>
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
@@ -5,16 +13,16 @@ keymap({ "n", "v" }, "<leader>fm", function()
   require("conform").format({ timeout_ms = 2000, lsp_fallback = true })
 end, opts)
 
-keymap("n", "<leader>tf", function()
-  vim.g.autoformat_enabled = vim.g.autoformat_enabled ~= false and false or nil
-  local state = vim.g.autoformat_enabled == false and "disabled" or "enabled"
-  vim.notify("Auto-format on save: " .. state)
-end, { desc = "Toggle auto-format on save" })
+</SELECTION_CONTENT>
+<FILE_CONTAINING_SELECTION>
+local keymap = vim.keymap.set
+local opts = { noremap = true, silent = true }
 
--- Lazy-require telescope.builtin so Telescope only loads when a key is pressed
-local function tb()
-  return require("telescope.builtin")
-end
+keymap({ "n", "v" }, "<leader>fm", function()
+  require("conform").format({ timeout_ms = 2000, lsp_fallback = true })
+end, opts)
+
+local tb = require("telescope.builtin")
 
 local function file_dir()
   local file_dir = vim.fn.expand("%:p:h")
@@ -49,24 +57,24 @@ local function lsp_code_action()
 end
 
 keymap("n", "<leader>ff", with_mode("files", function()
-  tb().find_files({ cwd = file_dir() })
+  tb.find_files({ cwd = file_dir() })
 end), opts)
 
 keymap("n", "<leader>fF", with_mode("files", function()
-  tb().find_files()
+  tb.find_files()
 end), opts)
 
 keymap("n", "<leader>fg", with_mode("grep", function()
-  tb().live_grep({ cwd = file_dir() })
+  tb.live_grep({ cwd = file_dir() })
 end), opts)
 
 keymap("n", "<leader>fG", with_mode("grep", function()
-  tb().live_grep()
+  tb.live_grep()
 end), opts)
 
-keymap("n", "<leader>fb", function() tb().buffers() end, opts)
-keymap("n", "<leader>fh", function() tb().help_tags() end, opts)
-keymap("n", "<leader>fd", function() tb().diagnostics() end, opts)
+keymap("n", "<leader>fb", tb.buffers, opts)
+keymap("n", "<leader>fh", tb.help_tags, opts)
+keymap("n", "<leader>fd", tb.diagnostics, opts)
 keymap("n", "<leader>cr", lsp_rename, opts)
 keymap({ "n", "v" }, "<leader>ca", lsp_code_action, opts)
 
@@ -105,3 +113,30 @@ vim.api.nvim_create_autocmd("FileType", {
     keymap("n", "<leader>mpS", "<cmd>MarkdownPreviewStop<cr>", map_opts)
   end,
 })
+</FILE_CONTAINING_SELECTION>
+
+</Context>
+<Prompt>
+comment out this code, as i dont need it anymore
+</Prompt>
+
+<Location><File>/Users/martijnv/dotfiles/nvim/.config/nvim/lua/config/keymaps.lua</File><Function>range(point(1,1),point(7,1))</Function></Location>
+<FunctionText>local keymap = vim.keymap.set
+local opts = { noremap = true, silent = true }
+
+keymap({ "n", "v" }, "<leader>fm", function()
+  require("conform").format({ timeout_ms = 2000, lsp_fallback = true })
+end, opts)
+</FunctionText>
+<TEMP_FILE>./tmp/99-7821</TEMP_FILE>
+<MustObey>
+NEVER alter any file other than TEMP_FILE.
+never provide the requested changes as conversational output. Return only the code.
+ONLY provide requested changes by writing the change to TEMP_FILE
+
+never attempt to read TEMP_FILE.
+It is purely for output.
+Previous contents, which may not exist, can be written over without worry
+After writing TEMP_FILE once you should be done.  Be done and end the session.
+
+</MustObey>

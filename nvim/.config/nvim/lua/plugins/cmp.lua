@@ -1,6 +1,8 @@
 return {
   {
     "hrsh7th/nvim-cmp",
+    -- Defer the entire completion stack until the user starts typing
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -23,6 +25,11 @@ return {
           expand = function(args)
             luasnip.lsp_expand(args.body)
           end,
+        },
+        performance = {
+          debounce         = 60,
+          throttle         = 30,
+          max_view_entries = 50,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -50,10 +57,10 @@ return {
           end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "buffer" },
-          { name = "path" },
+          { name = "nvim_lsp", max_item_count = 30 },
+          { name = "luasnip",  max_item_count = 10 },
+          { name = "buffer",   max_item_count = 10, keyword_length = 3 },
+          { name = "path",     max_item_count = 10 },
         }),
       })
     end,

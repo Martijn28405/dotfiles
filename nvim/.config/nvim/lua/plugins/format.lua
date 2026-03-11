@@ -5,7 +5,7 @@ return {
     opts = function()
       return {
         format_on_save = function()
-          if not vim.g.autoformat_enabled then
+          if vim.g.autoformat_enabled == false then
             return
           end
           return { timeout_ms = 2000, lsp_fallback = true }

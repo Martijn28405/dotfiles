@@ -1,0 +1,13 @@
+    config = function()
+      -- Load the 99 AI agent plugin
+      local _99 = require("99")
+      _99.setup({
+        -- Use OpenCode as the AI provider
+        provider = _99.Providers.OpenCodeProvider,
+        -- tmp_dir must be inside CWD or opencode will get permission errors
+        tmp_dir = "./tmp",
+        -- Use nvim-cmp as the completion source
+        completion = {
+          source = "cmp",
+        },
+      })

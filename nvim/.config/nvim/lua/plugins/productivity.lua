@@ -2,6 +2,7 @@ return {
   {
     "kylechui/nvim-surround",
     version = "*",
+    event = "VeryLazy",
     opts = {},
   },
   {
@@ -14,37 +15,46 @@ return {
   -- Makes . repeat work with plugin operations (surround, etc.)
   { "tpope/vim-repeat" },
 
-  -- Distraction-free writing/reading mode
-  {
-    "folke/zen-mode.nvim",
-    keys = {
-      { "<leader>zz", "<cmd>ZenMode<cr>", desc = "Zen mode" },
-    },
-    opts = {
-      plugins = {
-        twilight = { enabled = true },
-      },
-    },
-  },
-
-  -- Dims inactive code outside the current context (pairs with zen-mode)
-  { "folke/twilight.nvim", opts = {} },
-
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<leader>ha", function() require("harpoon"):list():add() end,                                        desc = "Harpoon: add file" },
+      { "<leader>hh", function() local h = require("harpoon"); h.ui:toggle_quick_menu(h:list()) end,        desc = "Harpoon: menu" },
+      { "<leader>h1", function() require("harpoon"):list():select(1) end,                                   desc = "Harpoon: file 1" },
+      { "<leader>h2", function() require("harpoon"):list():select(2) end,                                   desc = "Harpoon: file 2" },
+      { "<leader>h3", function() require("harpoon"):list():select(3) end,                                   desc = "Harpoon: file 3" },
+      { "<leader>h4", function() require("harpoon"):list():select(4) end,                                   desc = "Harpoon: file 4" },
+    },
     config = function()
-      local harpoon = require("harpoon")
-      harpoon:setup()
+      require("harpoon"):setup()
+    end,
+  },
 
-      local map = vim.keymap.set
-      map("n", "<leader>ha", function() harpoon:list():add() end, { desc = "Harpoon: add file" })
-      map("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon: menu" })
-      map("n", "<leader>h1", function() harpoon:list():select(1) end, { desc = "Harpoon: file 1" })
-      map("n", "<leader>h2", function() harpoon:list():select(2) end, { desc = "Harpoon: file 2" })
-      map("n", "<leader>h3", function() harpoon:list():select(3) end, { desc = "Harpoon: file 3" })
-      map("n", "<leader>h4", function() harpoon:list():select(4) end, { desc = "Harpoon: file 4" })
+  -- AI agent for Neovim that augments the programmer workflow
+  {
+    "ThePrimeagen/99",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
+    keys = {
+      { "<leader>9p", function() require("99.extensions.telescope").select_provider() end, desc = "99: select provider" },
+      { "<leader>9m", function() require("99.extensions.telescope").select_model() end,    desc = "99: select model" },
+      { "<leader>9w", function() require("99").vibe() end,                                 desc = "99: vibe (agentic)" },
+      { "<leader>9v", function() require("99").visual() end,                               desc = "99: visual replace", mode = "v" },
+      { "<leader>9s", function() require("99").search() end,                               desc = "99: search" },
+      { "<leader>9o", function() require("99").open() end,                                 desc = "99: history" },
+      { "<leader>9x", function() require("99").stop_all_requests() end,                    desc = "99: stop all" },
+    },
+    config = function()
+      local _99 = require("99")
+      _99.setup({
+        provider = _99.Providers.GeminiCLIProvider,
+        tmp_dir = "./tmp",
+        completion = { source = "cmp" },
+      })
     end,
   },
   {
@@ -66,62 +76,12 @@ return {
     end,
   },
 
-  -- Enhanced increment/decrement: dates, booleans, hex, const/let, etc.
-  {
-    "monaqa/dial.nvim",
-    keys = {
-      { "<C-a>", function() require("dial.map").manipulate("increment", "normal") end },
-      { "<C-x>", function() require("dial.map").manipulate("decrement", "normal") end },
-      { "<C-a>", function() require("dial.map").manipulate("increment", "visual") end, mode = "v" },
-      { "<C-x>", function() require("dial.map").manipulate("decrement", "visual") end, mode = "v" },
-    },
-    config = function()
-      local augend = require("dial.augend")
-      require("dial.config").augends:register_group({
-        default = {
-          augend.integer.alias.decimal,
-          augend.integer.alias.hex,
-          augend.date.alias["%Y-%m-%d"],
-          augend.date.alias["%Y/%m/%d"],
-          augend.constant.alias.bool,
-          augend.semver.alias.semver,
-          augend.constant.new({
-            elements = { "let", "const" },
-            word = true,
-            cyclic = true,
-          }),
-        },
-      })
-    end,
-  },
-
-  -- Split/join code blocks intelligently (function args, arrays, objects)
-  {
-    "Wansmer/treesj",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    keys = {
-      { "<leader>j", function() require("treesj").toggle() end, desc = "Split/join block" },
-    },
-    opts = { use_default_keymaps = false },
-  },
-
   -- Extended text objects (arguments, quotes, brackets, etc.)
   {
     "echasnovski/mini.ai",
     version = false,
+    event = "VeryLazy",
     opts = { n_lines = 500 },
-  },
-
-  -- Yank history — cycle through past yanks after pasting
-  {
-    "gbprod/yanky.nvim",
-    opts = {},
-    keys = {
-      { "p",     "<Plug>(YankyPutAfter)",    mode = { "n", "x" } },
-      { "P",     "<Plug>(YankyPutBefore)",   mode = { "n", "x" } },
-      { "<C-p>", "<Plug>(YankyCycleForward)",  desc = "Cycle yank forward" },
-      { "<C-n>", "<Plug>(YankyCycleBackward)", desc = "Cycle yank backward" },
-    },
   },
 
   -- Highlight and search TODO/FIXME/HACK/NOTE across the project

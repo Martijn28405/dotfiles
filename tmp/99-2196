@@ -1,0 +1,11 @@
+  -- AI agent for Neovim that augments the programmer workflow
+  {
+    -- The core plugin repository
+    "ThePrimeagen/99",
+    -- List of plugins that must be loaded for 99 to work
+    dependencies = {
+      -- Utility functions for asynchronous programming and more
+      "nvim-lua/plenary.nvim",
+      -- UI library used for creating floating windows and inputs
+      "MunifTanjim/nui.nvim",
+    },

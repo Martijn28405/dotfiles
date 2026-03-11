@@ -1,0 +1,14 @@
+-- Configure Neovim to use OSC52 as the clipboard provider.
+-- OSC52 is a terminal escape sequence that allows clipboard access
+-- over SSH and in terminal multiplexers (e.g. tmux, zellij).
+vim.g.clipboard = {
+  name = "osc52",
+  copy = {
+    ["+"] = osc52.copy("+"), -- copy to system clipboard
+    ["*"] = osc52.copy("*"), -- copy to primary selection
+  },
+  paste = {
+    ["+"] = osc52.paste("+"), -- paste from system clipboard
+    ["*"] = osc52.paste("*"), -- paste from primary selection
+  },
+}

@@ -11,7 +11,6 @@ return {
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
         lua = { "selene" },
-        php = { "phpcs" },
       }
 
       -- Run linter automatically on the events above

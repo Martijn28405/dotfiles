@@ -38,51 +38,6 @@ return {
     },
   },
 
-  {
-    "sindrets/diffview.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
-    keys = {
-      { "<leader>gd", "<cmd>DiffviewOpen<cr>",          desc = "Diffview: open" },
-      { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview: file history" },
-      { "<leader>gH", "<cmd>DiffviewFileHistory<cr>",   desc = "Diffview: branch history" },
-    },
-  },
-
-  {
-    "NeogitOrg/neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    cmd = "Neogit",
-    keys = {
-      { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" },
-    },
-    opts = {
-      integrations = {
-        diffview = true,
-        telescope = true,
-      },
-    },
-  },
-
-  {
-    "pwntester/octo.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    cmd = "Octo",
-    keys = {
-      { "<leader>gp", "<cmd>Octo pr list<cr>",    desc = "Octo: list PRs" },
-      { "<leader>gi", "<cmd>Octo issue list<cr>", desc = "Octo: list issues" },
-    },
-    opts = {},
-  },
-
   -- Copy a permalink to the current line/selection on GitHub
   {
     "linrongbin16/gitlinker.nvim",

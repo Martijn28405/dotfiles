@@ -1,0 +1,111 @@
+<Context>
+You receive a selection in neovim that you need to replace with new code.
+The selection's contents may contain notes, incorporate the notes every time if there are some.
+consider the context of the selection and what you are suppose to be implementing
+<SELECTION_LOCATION>
+range(point(2,1),point(11,4))
+</SELECTION_LOCATION>
+<SELECTION_CONTENT>
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+</SELECTION_CONTENT>
+<FILE_CONTAINING_SELECTION>
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("config.options")
+require("config.clipboard")
+
+require("lazy").setup({
+  spec = {
+    -- UI / look & feel
+    { import = "plugins.themes" },
+    { import = "plugins.ui" },
+    { import = "plugins.aesthetics" },
+    { import = "plugins.dashboard" },
+    { import = "plugins.lualine" },
+    { import = "plugins.polish" },
+
+    -- Navigation / search / projects
+    { import = "plugins.telescope" },
+    { import = "plugins.navigation" },
+    { import = "plugins.project" },
+    { import = "plugins.oil" },
+
+    -- Editing / productivity
+    { import = "plugins.cmp" },
+    { import = "plugins.productivity" },
+    { import = "plugins.tools" },
+
+    -- Code quality / language support
+    { import = "plugins.treesitter" },
+    { import = "plugins.lsp" },
+    { import = "plugins.format" },
+    { import = "plugins.lint" },
+    { import = "plugins.trouble" },
+
+    -- Workflow integrations
+    { import = "plugins.git" },
+    { import = "plugins.debug" },
+    { import = "plugins.test" },
+    { import = "plugins.session" },
+    { import = "plugins.db" },
+    { import = "plugins.vim_blade" },
+    { import = "plugins.fun" },
+  },
+})
+
+require("config.keymaps")
+require("config.format")
+require("config.projects")
+require("config.trouble")
+require("config.diagnostics")
+require("config.theme").load()
+</FILE_CONTAINING_SELECTION>
+
+</Context>
+<Prompt>
+comment out this code
+</Prompt>
+
+<Location><File>/Users/martijnv/dotfiles/nvim/.config/nvim/lua/config/init.lua</File><Function>range(point(2,1),point(11,4))</Function></Location>
+<FunctionText>if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end</FunctionText>
+<TEMP_FILE>./tmp/99-9480</TEMP_FILE>
+<MustObey>
+NEVER alter any file other than TEMP_FILE.
+never provide the requested changes as conversational output. Return only the code.
+ONLY provide requested changes by writing the change to TEMP_FILE
+
+never attempt to read TEMP_FILE.
+It is purely for output.
+Previous contents, which may not exist, can be written over without worry
+After writing TEMP_FILE once you should be done.  Be done and end the session.
+
+</MustObey>

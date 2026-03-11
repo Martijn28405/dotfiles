@@ -1,0 +1,4 @@
+k("n", "<leader>xw", "<cmd>Trouble diagnostics toggle<cr>", { silent = true }) -- workspace diagnostics
+k("n", "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { silent = true }) -- document diagnostics
+k("n", "<leader>xl", "<cmd>Trouble loclist toggle<cr>", { silent = true }) -- location list
+k("n", "<leader>xq", "<cmd>Trouble qflist toggle<cr>", { silent = true }) -- quickfix list

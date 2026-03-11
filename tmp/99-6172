@@ -1,0 +1,18 @@
+  -- -- AI agent for Neovim that augments the programmer workflow
+  -- {
+  --   "ThePrimeagen/99",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --   },
+  --   config = function()
+  --     local _99 = require("99")
+  --     _99.setup({
+  --       provider = _99.Providers.OpenCodeProvider,
+  --       model = "github-copilot/claude-haiku-4.5",
+  --       -- tmp_dir must be inside CWD or opencode will get permission errors
+  --       tmp_dir = "./tmp",
+  --       completion = {
+  --         source = "cmp",
+  --       },
+  --     })

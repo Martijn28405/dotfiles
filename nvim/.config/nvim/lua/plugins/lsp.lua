@@ -1,6 +1,10 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    -- Not lazy-loaded: lspconfig must register its FileType autocmds before
+    -- any buffer opens. Lazy-loading causes a race with Telescope (and other
+    -- openers) where FileType fires before the handlers are registered.
+    lazy = false,
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
@@ -14,14 +18,11 @@ return {
         vim.keymap.set("n", "gd", vim.lsp.buf.definition,                   opts)
         vim.keymap.set("n", "K",  vim.lsp.buf.hover,                        opts)
         vim.keymap.set("n", "gr", "<Cmd>Telescope lsp_references<CR>",      opts)
-        vim.keymap.set("n", "gD", "<cmd>Glance definitions<cr>",            opts)
-        vim.keymap.set("n", "gR", "<cmd>Glance references<cr>",             opts)
-        vim.keymap.set("n", "gI", "<cmd>Glance implementations<cr>",        opts)
-        vim.keymap.set("n", "gY", "<cmd>Glance type_definitions<cr>",       opts)
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,                 opts)
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next,                 opts)
       end
 
+      require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
@@ -29,8 +30,7 @@ return {
           "pyright",
           "rust_analyzer",
           "intelephense",
-          "csharp_ls",
-          "volar",
+          "vue_ls",
         },
         handlers = {
           function(server_name)
@@ -50,6 +50,18 @@ return {
               },
             })
           end,
+          intelephense = function()
+            require("lspconfig").intelephense.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              single_file_support = true,
+              root_dir = function(fname)
+                return require("lspconfig.util").root_pattern("composer.json", ".git")(fname)
+                  or vim.fs.dirname(vim.fs.find("composer.json", { path = fname, upward = true })[1] or fname)
+                  or vim.fn.getcwd()
+              end,
+            })
+          end,
         },
       })
     end,
@@ -65,9 +77,10 @@ return {
     },
   },
 
-  -- Peek definitions/references in a float without leaving current file
+  -- Peek definitions/references/implementations in an inline float
   {
     "dnlhc/glance.nvim",
+    cmd = "Glance",
     opts = {},
   },
 }

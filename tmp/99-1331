@@ -1,0 +1,21 @@
+  -- AI agent for Neovim that augments the programmer workflow
+  {
+    "ThePrimeagen/99",
+    -- Required dependencies for UI and utility functions
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      local _99 = require("99")
+      -- Initialize the plugin with provider and directory settings
+      _99.setup({
+        -- Using OpenCodeProvider for agentic capabilities
+        provider = _99.Providers.OpenCodeProvider,
+        -- tmp_dir must be inside CWD or opencode will get permission errors
+        tmp_dir = "./tmp",
+        -- Configure the completion source for the agent
+        completion = {
+          source = "cmp", -- Use nvim-cmp for integration
+        },
+      })

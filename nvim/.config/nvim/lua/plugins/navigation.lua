@@ -31,20 +31,4 @@ return {
     },
   },
 
-  {
-    "stevearc/aerial.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      backends = { "lsp", "treesitter", "markdown", "man" },
-      layout = {
-        min_width = 28,
-        default_direction = "right",
-      },
-    },
-    keys = {
-      { "<leader>as", "<cmd>AerialToggle!<cr>", desc = "Aerial symbols" },
-      { "]s", "<cmd>AerialNext<cr>", desc = "Next symbol" },
-      { "[s", "<cmd>AerialPrev<cr>", desc = "Prev symbol" },
-    },
-  },
 }

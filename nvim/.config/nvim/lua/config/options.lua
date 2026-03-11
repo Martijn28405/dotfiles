@@ -21,3 +21,8 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
 vim.opt.swapfile = false
 
+-- Performance
+vim.opt.updatetime = 250   -- faster CursorHold → snappier diagnostics & gitsigns
+vim.opt.synmaxcol  = 240   -- don't highlight beyond 240 chars/line (helps with minified files)
+vim.opt.redrawtime = 1500  -- abort slow syntax highlighting rather than freezing
+

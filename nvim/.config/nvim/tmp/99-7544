@@ -1,0 +1,4 @@
+/Users/martijnv/dotfiles/nvim/.config/nvim/lua/plugins/productivity.lua:53:5,1,Plugin spec entry for ThePrimeagen/99 - the main 99 plugin source definition
+/Users/martijnv/dotfiles/nvim/.config/nvim/lua/plugins/productivity.lua:59:7,7,require("99") and setup() call with provider and completion configuration for the 99 plugin
+/Users/martijnv/dotfiles/nvim/.config/nvim/lua/plugins/productivity.lua:68:7,7,Keymaps block for 99 plugin using <leader>9* prefix mappings
+/Users/martijnv/dotfiles/nvim/.config/nvim/lua/plugins/tools.lua:24:7,2,foldlevel and foldlevelstart both set to 99 to keep all folds open by default

@@ -1,0 +1,6 @@
+-- local keymap = vim.keymap.set
+-- local opts = { noremap = true, silent = true }
+--
+-- keymap({ "n", "v" }, "<leader>fm", function()
+--   require("conform").format({ timeout_ms = 2000, lsp_fallback = true })
+-- end, opts)

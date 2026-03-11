@@ -39,12 +39,14 @@ return {
   {
     "echasnovski/mini.bufremove",
     version = false,
+    lazy = true,
     opts = {},
   },
 
   -- LSP progress spinner
   {
     "j-hui/fidget.nvim",
+    event = "LspAttach",
     opts = {
       notification = {
         window = { winblend = 0 },
@@ -53,10 +55,7 @@ return {
   },
 
   -- Better vim.ui.select and vim.ui.input
-  { "stevearc/dressing.nvim", opts = {} },
-
-  -- Scrollbar with diagnostic/git/search markers
-  { "lewis6991/satellite.nvim", opts = {} },
+  { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
 
   -- Breadcrumbs in the winbar (file > class > function)
   {
@@ -70,23 +69,5 @@ return {
     "stevearc/quicker.nvim",
     ft = "qf",
     opts = {},
-  },
-
-  -- Animated cursor movement
-  {
-    "sphamba/smear-cursor.nvim",
-    opts = {
-      stiffness = 0.8,
-      trailing_stiffness = 0.5,
-      distance_stop_animating = 0.5,
-    },
-  },
-
-  -- Smooth scrolling
-  {
-    "karb94/neoscroll.nvim",
-    opts = {
-      duration_multiplier = 0.8,
-    },
   },
 }
