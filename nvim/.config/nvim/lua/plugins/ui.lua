@@ -1,4 +1,5 @@
 return {
+  -- Shows available keybindings in a popup
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -6,40 +7,6 @@ return {
       vim.o.timeout = true
       vim.o.timeoutlen = 300
     end,
-    opts = {},
-  },
-
-  -- Buffer tabs at the top
-  {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      options = {
-        diagnostics = "nvim_lsp",
-        diagnostics_indicator = function(count, level)
-          local icon = level:match("error") and " " or " "
-          return " " .. icon .. count
-        end,
-      },
-    },
-    keys = {
-      { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-      { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-      {
-        "<leader>bd",
-        function()
-          require("mini.bufremove").delete(0, false)
-        end,
-        desc = "Delete buffer",
-      },
-    },
-  },
-
-  {
-    "echasnovski/mini.bufremove",
-    version = false,
-    lazy = true,
     opts = {},
   },
 
@@ -57,17 +24,55 @@ return {
   -- Better vim.ui.select and vim.ui.input
   { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
 
-  -- Breadcrumbs in the winbar (file > class > function)
+  -- Breadcrumbs in the winbar
   {
     "Bekaboo/dropbar.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {},
   },
 
-  -- Better quickfix list workflow
+  -- Better quickfix list
+  { "stevearc/quicker.nvim", ft = "qf", opts = {} },
+
+  -- Indent guide lines
+  { "lukas-reineke/indent-blankline.nvim", main = "ibl", event = { "BufReadPost", "BufNewFile" }, opts = {} },
+
+  -- Rainbow colored brackets
+  { "HiPhish/rainbow-delimiters.nvim", event = { "BufReadPost", "BufNewFile" } },
+
+  -- Inline color swatches for hex/rgb/hsl/tailwind
   {
-    "stevearc/quicker.nvim",
-    ft = "qf",
-    opts = {},
+    "NvChad/nvim-colorizer.lua",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      user_default_options = {
+        css = true,
+        tailwind = true,
+      },
+    },
+  },
+
+  -- Rendered markdown in-buffer
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      bullet = { enabled = true, icons = { "●", "○", "◆", "◇" } },
+      heading = { enabled = true, sign = false },
+    },
+  },
+
+  -- Markdown preview in browser
+  {
+    "selimacerbas/markdown-preview.nvim",
+    ft = { "markdown", "mmd", "mermaid" },
+    dependencies = { "selimacerbas/live-server.nvim" },
+    config = function()
+      require("markdown_preview").setup({ open_browser = true })
+    end,
   },
 }

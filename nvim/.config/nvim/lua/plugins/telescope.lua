@@ -42,6 +42,14 @@ return {
     config = function(_, opts)
       require("telescope").setup(opts)
       pcall(require("telescope").load_extension, "ui-select")
+      pcall(require("telescope").load_extension, "fzf")
     end,
+  },
+
+  -- Native FZF sorter for faster fuzzy finding
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+    dependencies = { "nvim-telescope/telescope.nvim" },
   },
 }
