@@ -12,5 +12,8 @@ return {
       require("project_nvim").setup(opts)
       pcall(require("telescope").load_extension, "projects")
     end,
+    keys = {
+      { "<leader>pp", function() require("telescope").extensions.projects.projects({}) end, desc = "Projects" },
+    },
   },
 }

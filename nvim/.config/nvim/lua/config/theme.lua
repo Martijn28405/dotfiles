@@ -2,22 +2,13 @@
 local M = {}
 
 local themes = {
-  "tokyonight-storm",
-  "tokyonight-night",
   "catppuccin",
   "kanagawa",
   "kanagawa-dragon",
-  "nightfox",
-  "duskfox",
-  "nordfox",
-  "rose-pine",
-  "rose-pine-moon",
-  "everforest",
-  "onedark",
   "dracula",
 }
 
-local default_theme = "tokyonight-storm"
+local default_theme = "catppuccin"
 local theme_file = vim.fn.stdpath("state") .. "/theme.txt"
 
 local function ensure_state_dir()
