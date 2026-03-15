@@ -1,9 +1,6 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    -- Not lazy-loaded: lspconfig must register its FileType autocmds before
-    -- any buffer opens. Lazy-loading causes a race with Telescope (and other
-    -- openers) where FileType fires before the handlers are registered.
     lazy = false,
     dependencies = {
       "williamboman/mason.nvim",
@@ -15,11 +12,15 @@ return {
 
       local on_attach = function(_, bufnr)
         local opts = { buffer = bufnr, noremap = true, silent = true }
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition,                   opts)
-        vim.keymap.set("n", "K",  vim.lsp.buf.hover,                        opts)
-        vim.keymap.set("n", "gr", "<Cmd>Telescope lsp_references<CR>",      opts)
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,                 opts)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next,                 opts)
+        vim.keymap.set("n", "gd",          vim.lsp.buf.definition,       opts)
+        vim.keymap.set("n", "K",           vim.lsp.buf.hover,            opts)
+        vim.keymap.set("n", "[d",          vim.diagnostic.goto_prev,     opts)
+        vim.keymap.set("n", "]d",          vim.diagnostic.goto_next,     opts)
+        vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, vim.tbl_extend("force", opts, { desc = "Workspace symbols" }))
+        vim.keymap.set("n", "<leader>vd",  vim.diagnostic.open_float,    vim.tbl_extend("force", opts, { desc = "Diagnostic float" }))
+        vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action,      vim.tbl_extend("force", opts, { desc = "Code action" }))
+        vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references,       vim.tbl_extend("force", opts, { desc = "References" }))
+        vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename,           vim.tbl_extend("force", opts, { desc = "Rename" }))
       end
 
       require("mason").setup()
@@ -65,22 +66,5 @@ return {
         },
       })
     end,
-  },
-
-  -- Function signature hint while typing arguments
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "InsertEnter",
-    opts = {
-      bind = true,
-      handler_opts = { border = "rounded" },
-    },
-  },
-
-  -- Peek definitions/references/implementations in an inline float
-  {
-    "dnlhc/glance.nvim",
-    cmd = "Glance",
-    opts = {},
   },
 }

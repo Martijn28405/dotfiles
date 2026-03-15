@@ -17,7 +17,7 @@ local themes = {
   "dracula",
 }
 
-local default_theme = "tokyonight-storm"
+local default_theme = "rose-pine-moon"
 local theme_file = vim.fn.stdpath("state") .. "/theme.txt"
 
 local function ensure_state_dir()

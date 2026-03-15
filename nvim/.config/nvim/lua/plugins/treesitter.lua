@@ -7,8 +7,8 @@ return {
     opts = {
       auto_install = true,
       ensure_installed = {
-        "astro",
         "bash",
+        "c",
         "css",
         "go",
         "html",
@@ -20,10 +20,14 @@ return {
         "php",
         "python",
         "regex",
+        "rust",
         "toml",
         "tsx",
         "typescript",
+        "vim",
+        "vimdoc",
         "yaml",
+        "zig",
       },
       highlight = { enable = true },
       indent = { enable = true },
@@ -31,11 +35,5 @@ return {
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
     end,
-  },
-
-  {
-    "windwp/nvim-ts-autotag",
-    event = "InsertEnter",
-    opts = {},
   },
 }
