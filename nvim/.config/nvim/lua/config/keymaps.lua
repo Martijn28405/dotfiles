@@ -24,6 +24,7 @@ local function with_mode(mode, fn)
 end
 
 keymap("n", "<leader>ff", with_mode("files", function() tb().find_files({ cwd = file_dir() }) end), opts)
+keymap("n", "<leader>gf", with_mode("files", function() tb().git_files({ cwd = file_dir() }) end), opts)
 keymap("n", "<leader>fF", with_mode("files", function() tb().find_files() end), opts)
 keymap("n", "<leader>fg", with_mode("grep", function() tb().live_grep({ cwd = file_dir() }) end), opts)
 keymap("n", "<leader>fG", with_mode("grep", function() tb().live_grep() end), opts)
