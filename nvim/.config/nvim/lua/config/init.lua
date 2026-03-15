@@ -12,7 +12,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("config.options")
-require("config.clipboard")
 
 require("lazy").setup({
   spec = {

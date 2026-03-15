@@ -31,7 +31,7 @@ return {
         },
         pickers = {
           find_files = {
-            find_command = { "fd", "--type", "f", "--hidden" },
+            find_command = { "fd", "--type", "f", "--hidden", "--no-ignore-vcs" },
           },
         },
         extensions = {
