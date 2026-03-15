@@ -51,7 +51,7 @@ return {
     config = function()
       local _99 = require("99")
       _99.setup({
-        provider = _99.Providers.GeminiCLIProvider,
+        provider = _99.Providers.ClaudeCodeProvider,
         tmp_dir = "./tmp",
         completion = { source = "cmp" },
       })
