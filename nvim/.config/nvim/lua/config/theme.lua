@@ -2,26 +2,32 @@
 local M = {}
 
 local themes = {
-  "tokyonight-storm",
-  "tokyonight-night",
   "catppuccin",
   "kanagawa",
   "kanagawa-dragon",
-  "nightfox",
-  "duskfox",
-  "nordfox",
+  "dracula",
   "rose-pine",
   "rose-pine-moon",
-  "everforest",
-  "onedark",
-  "dracula",
+  "rose-pine-dawn",
 }
 
-local default_theme = "tokyonight-storm"
+local default_theme = "catppuccin"
 local theme_file = vim.fn.stdpath("state") .. "/theme.txt"
 
 local function ensure_state_dir()
   vim.fn.mkdir(vim.fn.fnamemodify(theme_file, ":h"), "p")
+end
+
+local function make_transparent()
+  local groups = {
+    "Normal", "NormalNC", "NormalFloat", "FloatBorder",
+    "SignColumn", "StatusLine", "StatusLineNC",
+    "WinBar", "WinBarNC", "TabLine", "TabLineFill",
+    "NeoTreeNormal", "NeoTreeNormalNC",
+  }
+  for _, g in ipairs(groups) do
+    vim.api.nvim_set_hl(0, g, { bg = "NONE", ctermbg = "NONE" })
+  end
 end
 
 local function apply(name, persist)
@@ -36,6 +42,7 @@ local function apply(name, persist)
   end
 
   vim.g.active_colorscheme = name
+  make_transparent()
 
   if persist then
     ensure_state_dir()
