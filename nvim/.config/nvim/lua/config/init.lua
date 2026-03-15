@@ -15,43 +15,22 @@ require("config.options")
 
 require("lazy").setup({
   spec = {
-    -- UI / look & feel
     { import = "plugins.themes" },
-    { import = "plugins.ui" },
-    { import = "plugins.aesthetics" },
-    { import = "plugins.dashboard" },
-    { import = "plugins.lualine" },
-    { import = "plugins.polish" },
-
-    -- Navigation / search / projects
     { import = "plugins.telescope" },
-    { import = "plugins.navigation" },
-    { import = "plugins.project" },
-    { import = "plugins.oil" },
-
-    -- Editing / productivity
-    { import = "plugins.cmp" },
-    { import = "plugins.productivity" },
-    { import = "plugins.tools" },
-
-    -- Code quality / language support
     { import = "plugins.treesitter" },
     { import = "plugins.lsp" },
+    { import = "plugins.cmp" },
     { import = "plugins.format" },
-    { import = "plugins.lint" },
     { import = "plugins.trouble" },
-
-    -- Workflow integrations
+    { import = "plugins.harpoon" },
+    { import = "plugins.undotree" },
+    { import = "plugins.fugitive" },
     { import = "plugins.git" },
-    { import = "plugins.session" },
-    { import = "plugins.vim_blade" },
+    { import = "plugins.99" },
   },
 })
 
 require("config.keymaps")
-require("config.splits")
-require("config.format")
-require("config.projects")
 require("config.trouble")
 require("config.diagnostics")
 require("config.theme").load()

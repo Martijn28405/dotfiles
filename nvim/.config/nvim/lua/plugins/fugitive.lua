@@ -1,0 +1,27 @@
+return {
+  {
+    "tpope/vim-fugitive",
+    keys = {
+      { "<leader>gs", vim.cmd.Git, desc = "Git status (Fugitive)" },
+    },
+    config = function()
+      local fugitive_group = vim.api.nvim_create_augroup("Fugitive", { clear = true })
+      vim.api.nvim_create_autocmd("BufWinEnter", {
+        group = fugitive_group,
+        pattern = "*",
+        callback = function()
+          if vim.bo.ft ~= "fugitive" then return end
+          local bufnr = vim.api.nvim_get_current_buf()
+          local opts = { buffer = bufnr, remap = false }
+          -- Push / pull inside fugitive buffer
+          vim.keymap.set("n", "<leader>p", function()
+            vim.cmd.Git("push")
+          end, vim.tbl_extend("force", opts, { desc = "Git push" }))
+          vim.keymap.set("n", "<leader>P", function()
+            vim.cmd.Git({ "pull", "--rebase" })
+          end, vim.tbl_extend("force", opts, { desc = "Git pull --rebase" }))
+        end,
+      })
+    end,
+  },
+}
