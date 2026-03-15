@@ -27,6 +27,7 @@ return {
           layout_config = {
             prompt_position = "bottom",
             height = 0.9,
+            preview_cutoff = 0,
           },
         },
         pickers = {

@@ -72,4 +72,6 @@ return {
   },
 
   { "nvim-tree/nvim-web-devicons" },
+
+  { "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },
 }

@@ -72,6 +72,21 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Keep cursor centered when scrolling and searching
+keymap("n", "<C-d>", "<C-d>zz", opts)
+keymap("n", "<C-u>", "<C-u>zz", opts)
+keymap("n", "n", "nzz", opts)
+keymap("n", "N", "Nzz", opts)
+
+-- Disable arrow keys (use hjkl instead)
+local arrow_msg = { noremap = true, silent = true }
+for _, mode in ipairs({ "n", "v", "i" }) do
+  keymap(mode, "<Up>",    "<Nop>", arrow_msg)
+  keymap(mode, "<Down>",  "<Nop>", arrow_msg)
+  keymap(mode, "<Left>",  "<Nop>", arrow_msg)
+  keymap(mode, "<Right>", "<Nop>", arrow_msg)
+end
+
 -- Neo-tree
 keymap("n", "<leader>e", "<cmd>Neotree toggle<cr>", vim.tbl_extend("force", opts, { desc = "Toggle File Explorer" }))
 
